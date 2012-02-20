@@ -1,0 +1,37 @@
+L'utilisateur charge la page.
+
+
+Aucune info n'a été envoyée, donc on envoie le formulaire nu.
+
+Sinon, des infos ont étés envoyées,
+	
+	Si elles sont erronées ont réaffiche le formulaire avec des indications
+	
+	Sinon on enregistre les infos et on n'affiche pas le forumlaire.
+	
+if (!isset(id) && !isset(mdp)) {
+	
+	formulaire nu
+
+}else {
+
+	$idempty = 0;
+	$idmdp = 0;
+
+	if (empty(id))
+		$idEmpty = 1
+	if (empty(mdp))
+		$mdpEmpty = 1
+
+	if (idEmpty || mdpEmpty) {
+
+		debut formulaire
+		if ($idEmpty)
+			indication id
+		if ($mdpEmpty)
+			indication mdp
+		fin formulaire
+	}
+	else
+		finalisation
+}
