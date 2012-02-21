@@ -9,9 +9,9 @@
 	<BODY>
 
 		
-	<?php	
-
-	if (!isset($_POST['envoi'])) {
+	<?php				
+	
+	if (!isset($_POST["id"]) && !isset($_POST["mdp"])) {
 	
 		echo '<table align="center">
 			<form action="inscription.php" method="post">
@@ -39,14 +39,36 @@
 	} 	
 	else {
 
-		$idValide = true;
-		$mdpValide = true;
+		$queDesChiffres = false;
+		$moinsDe6Char = false;
 		
-		if (!isset($_POST["id"]) || empty($_POST["id"]))
+		if (empty($_POST["id"])) 
 			$idValide = false;
+		else {
+
+			$queDesChiffres = true;
 			
-		if (!isset($_POST["mdp"]) || empty($_POST["mdp"]))
+			for ($i=0 ; $i<strlen($_POST["id"]) ; $i++) {
+				$queDesChiffres = is_numeric($_POST["id"][$i]);
+			
+				if ($queDesChiffres == false)
+					break;
+			}
+			
+			$idValide = !$queDesChiffres;
+		}
+		
+		if (empty($_POST["mdp"]))
 			$mdpValide = false;
+		else if (strlen($_POST["mdp"]) < 6) {
+		
+			$mdpValide = false;
+			$moinsDe6Char = true;
+		}
+		else
+			$mdpValide = true;
+		
+			
 			
 		if (!$idValide || !$mdpValide) {
 		
@@ -55,14 +77,22 @@
 				<tr>
 					<td>Identifiant</td>
 					<td><input type="text" name="id"></td>';
-			if (!$idValide)
-				echo '<td>Champ vide</td>';
-					
+			if (!$idValide) {
+				if ($queDesChiffres)
+					echo '<td>Ce champ doit comporter au moins 1 lettre</td>';
+				else
+					echo '<td>Ce champ est vide</td>';
+			}
+			
 			echo '</tr><tr>
 					<td>Mot de passe</td>
 					<td><input type="text" name="mdp"></td>';
-			if (!$mdpValide)
-				echo '<td>Champ vide</td>';
+			if (!$mdpValide) {
+				if ($moinsDe6Char)
+					echo '<td>Ce champ doit comporter au moins 6 carateres</td>';
+				else
+					echo '<td>Ce champ est vide</td>';
+			}
 				
 			echo '</tr>
 					<tr>
