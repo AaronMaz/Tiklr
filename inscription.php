@@ -93,18 +93,14 @@
 			
 			$mdp = $_POST["mdp"];
 			$id = $_POST["id"];
-			echo $id.$mdp;
-			try {
-				$bdd->exec('INSERT INTO compte VALUES('.$id.', "'.$mdp.'")');
-			}
-			catch (Exception $e) {
-					die('Erreur : ' . $e->getMessage());
-			}
+			
+			$bdd->exec('insert into compte values ( \' '.$id.' \', \' '.$mdp.'\')');
+			
 			$reponse =  $bdd->query('SELECT * FROM compte');
 			
 			// On affiche chaque entrée une à une
 			while ($donnees = $reponse->fetch())
-				echo $donnees["Identifiant"].' : '.$donnees["Mot de passe"].'<br>';
+				echo $donnees["Identifiant"].' : '.$donnees["Pass"].'<br>';
 				
 			echo '
 				<div align="center">
