@@ -11,6 +11,37 @@
 		
 	<?php				
 	
+	function testIdentifiant($id) {
+	
+		if (empty($id)) 
+			return 1;
+			
+		else {
+			/*Il faut au moins 1 lettre pour être valide
+			donc des qu'on trouve autre chose qu'un chiffre, on valide
+			*/
+			
+			for ($i=0 ; $i<strlen($id) ; $i++) {
+			
+				if (is_numeric($id[$i]) == false)
+					return 0;
+			}
+			
+			return 2;
+		}
+	}
+
+	function testPasse($mdp) {
+	
+		if (empty($mdp))
+			return 1;
+		else if (strlen($mdp) < 6) 
+			return 2;
+		else
+			return 0;
+	
+	}
+	
 	if (!isset($_POST["id"]) && !isset($_POST["mdp"])) {
 	
 		echo '<table align="center">
@@ -23,7 +54,7 @@
 				<td><input type="text" name="mdp"></td>
 			</tr>
 			<tr>
-				<td>Nom</td>
+				<td>Entrez le Mot de Passe une seconde fois</td>
 				<td><input type="text" name="nom"></td>
 			</tr>
 			<tr>
@@ -38,65 +69,35 @@
 	
 	} 	
 	else {
-
-		$queDesChiffres = false;
-		$moinsDe6Char = false;
 		
-		if (empty($_POST["id"])) 
-			$idValide = false;
-		else {
-
-			$queDesChiffres = true;
-			
-			for ($i=0 ; $i<strlen($_POST["id"]) ; $i++) {
-				$queDesChiffres = is_numeric($_POST["id"][$i]);
-			
-				if ($queDesChiffres == false)
-					break;
-			}
-			
-			$idValide = !$queDesChiffres;
-		}
+		$idValideCode = testIdentifiant($_POST["id"]);
+		$mdpValideCode = testPasse($_POST["mdp"]);
 		
-		if (empty($_POST["mdp"]))
-			$mdpValide = false;
-		else if (strlen($_POST["mdp"]) < 6) {
-		
-			$mdpValide = false;
-			$moinsDe6Char = true;
-		}
-		else
-			$mdpValide = true;
-		
-			
-			
-		if (!$idValide || !$mdpValide) {
+		if ($idValideCode != 0 || $mdpValideCode != 0) {
 		
 			echo '<table align="center">
 				<form action="inscription.php" method="post">
 				<tr>
 					<td>Identifiant</td>
 					<td><input type="text" name="id"></td>';
-			if (!$idValide) {
-				if ($queDesChiffres)
-					echo '<td>Ce champ doit comporter au moins 1 lettre</td>';
-				else
+				if ($idValideCode == 1)
 					echo '<td>Ce champ est vide</td>';
-			}
+				else if ($idValideCode == 2)
+					echo '<td>Ce champ doit comporter au moins 1 lettre</td>';
+
 			
 			echo '</tr><tr>
 					<td>Mot de passe</td>
 					<td><input type="text" name="mdp"></td>';
-			if (!$mdpValide) {
-				if ($moinsDe6Char)
-					echo '<td>Ce champ doit comporter au moins 6 carateres</td>';
-				else
+				if ($mdpValideCode == 1) 
 					echo '<td>Ce champ est vide</td>';
-			}
+				else if ($mdpValideCode == 2)
+					echo '<td>Ce champ doit comporter au moins 6 carateres</td>';
+
 				
 			echo '</tr>
 					<tr>
-						<td>Nom</td>
+						<td>Entrez le Mot de Passe une seconde fois</td>
 						<td><input type="text" name="nom"></td>
 					</tr>
 					<tr>
