@@ -42,6 +42,17 @@
 	
 	}
 	
+	function testPasseCopie($mdp, $mdpCopie) {
+	
+		if (empty($mdpCopie))
+			return 1;
+		else if (strcmp($mdp, $mdpCopie) != 0)
+			return 2;
+		else
+			return 0;
+	
+	}
+	
 	if (!isset($_POST["id"]) && !isset($_POST["mdp"])) {
 	
 		echo '<table align="center">
@@ -54,12 +65,34 @@
 				<td><input type="text" name="mdp"></td>
 			</tr>
 			<tr>
-				<td>Entrez le Mot de Passe une seconde fois</td>
-				<td><input type="text" name="nom"></td>
+				<td>Retapez le mot de passe</td>
+				<td><input type="text" name="mdp2"></td>
 			</tr>
 			<tr>
-				<td>Prenom</td>
-				<td><input type="text" name="prenom"></td>
+				<td>Pays</td>
+				<td><select name="pays">
+					<option>France</option>
+					<option>Angleterre</option>
+					<option>Etats-Unis</option>
+					<option>Allemagne</option>
+				</td>
+			</tr>
+			<tr>
+				<td>Région</td>
+				<td><select name="region">
+					<option>A remplir...</option>
+				</td>
+			</tr>
+			<tr>
+				<td>Sexe</td>
+				<td><select name="sexe">
+					<option>Masculin</option>
+					<option>Feminin</option>
+				</td>
+			</tr>
+			<tr>
+				<td>Age</td>
+				<td><input type="text" name="age"></td>
 			</tr>
 			<tr>
 				<td colspan="2" align="center"><input type="submit" name="envoi"></td>
@@ -72,7 +105,8 @@
 		
 		$idValideCode = testIdentifiant($_POST["id"]);
 		$mdpValideCode = testPasse($_POST["mdp"]);
-		
+		$mdpCopieValideCode = testPasseCopie($_POST["mdp"], $_POST["mdp2"]);
+			
 		if ($idValideCode != 0 || $mdpValideCode != 0) {
 		
 			echo '<table align="center">
@@ -97,12 +131,39 @@
 				
 			echo '</tr>
 					<tr>
-						<td>Entrez le Mot de Passe une seconde fois</td>
-						<td><input type="text" name="nom"></td>
+						<td>Retapez le mot de passe</td>
+						<td><input type="text" name="mdp2"></td>';
+						if ($mdpCopieValideCode == 1)
+							echo '<td>Ce champ est vide</td>';
+						else if ($mdpCopieValideCode == 2)
+							echo '<td>Il y a une erreur dans le mot de passe</td>';
+					
+					echo '</tr>
+					<tr>
+						<td>Pays</td>
+						<td><select name="pays">
+							<option>France</option>
+							<option>Angleterre</option>
+							<option>Etats-Unis</option>
+							<option>Allemagne</option>
+						</td>
 					</tr>
 					<tr>
-						<td>Prenom</td>
-						<td><input type="text" name="prenom"></td>
+						<td>Région</td>
+						<td><select name="region">
+							<option>A remplir...</option>
+						</td>
+					</tr>
+					<tr>
+						<td>Sexe</td>
+						<td><select name="sexe">
+							<option>Masculin</option>
+							<option>Feminin</option>
+						</td>
+					</tr>
+					<tr>
+						<td>Age</td>
+						<td><input type="text" name="age"></td>
 					</tr>
 					<tr>
 						<td colspan="2" align="center"><input type="submit" name="envoi"></td>
@@ -112,26 +173,16 @@
 		}	
 		else {
 		
-			//$bdd = new PDO('mysql:host=localhost;dbname=test', 'root', '');
+			$bdd = new PDO('mysql:host=localhost;dbname=test', 'root', '');	
 			
-			try	{
-				$pdo_options[PDO::ATTR_ERRMODE] = PDO::ERRMODE_EXCEPTION;
-				$bdd = new PDO('mysql:host=localhost;dbname=test', 'root', '', $pdo_options);
-			}
-			catch (Exception $e) {
-					die('Erreur : ' . $e->getMessage());
-			}
-			
-			$mdp = $_POST["mdp"];
-			$id = $_POST["id"];
-			
-			$bdd->exec('insert into compte values ( \' '.$id.' \', \' '.$mdp.'\')');
+			$insertion = $bdd->prepare( 'insert into compte values (?, ?, ?, ?, ?, ?)' );
+			$insertion->execute( array($_POST["id"], $_POST["mdp"], $_POST["pays"], $_POST["region"], $_POST["sexe"], $_POST["age"]) );
 			
 			$reponse =  $bdd->query('SELECT * FROM compte');
 			
 			// On affiche chaque entrée une à une
 			while ($donnees = $reponse->fetch())
-				echo $donnees["Identifiant"].' : '.$donnees["Pass"].'<br>';
+				echo $donnees["Identifiant"].' : '.$donnees["Pass"].' : '.$donnees["Pays"].' : '.$donnees["Region"].' : '.$donnees["Sexe"].' : '.$donnees["Age"].'<br>';
 				
 			echo '
 				<div align="center">
