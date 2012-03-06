@@ -1,3 +1,17 @@
+######## CONNEXION ############
+
+L'utilisateur charge la page.
+
+Aucune info n'a été envoyée, donc on envoie le formulaire nu.
+
+Sinon, des infos ont étés envoyées,
+	
+	Si elles sont erronées on réaffiche le formulaire avec des indications
+	
+	Sinon la connexion s'est bien déroulée et on n'affiche pas le formulaire.
+
+######### INSCRIPTION ###########
+
 L'utilisateur charge la page.
 
 

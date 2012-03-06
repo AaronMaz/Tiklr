@@ -53,7 +53,7 @@
 	
 	}
 	
-	if (!isset($_POST["id"]) && !isset($_POST["mdp"])) {
+	if (isset($_POST["envoi"]) == false) {
 	
 		echo '<table align="center">
 			<form action="inscription.php" method="post">
