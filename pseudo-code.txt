@@ -1,0 +1,72 @@
+######### CONNEXION ############
+
+L'utilisateur charge la page, la variable de session nonConnecté est initialisée à 1.
+
+
+Si nonConnecté est vraie (différent de 0)
+
+	Si des infos ont étés envoyées via POST
+	
+		Si elles sont valides, nonConnecté est mis a 0.
+		
+		Sinon, nonConnecté est mis a 2.
+
+		
+Si nonConnecté est vraie (différent de 0)
+
+	On affiche le formulaire.
+	
+	Si nonConnecté vaut 2
+
+		On affiche en plus un message d'erreur
+		
+Sinon, on est connecté
+
+	On n'affiche pas le formulaire mais un message de bienvenue.
+
+######### INSCRIPTION ###########
+
+L'utilisateur charge la page.
+
+
+Si aucune info n'a été envoyée via POST
+
+	On envoie le formulaire nu.
+
+Sinon, des infos ont étés envoyées,
+	
+	Si elles sont erronées
+
+		On réaffiche le formulaire avec des indications
+	
+	Sinon on enregistre les infos et on n'affiche pas le forumlaire.
+	
+
+if ( isset(submit) == false) {
+	
+	formulaire nu
+
+}else {
+
+	idCodeErreur = testId(id);
+	mdpCodeErreur = testMdp(mdp);
+
+	if (idCodeErreur || mdpCodeErreur) {
+
+		debut formulaire
+		
+		if (idCodeErreur == 1)
+			indication id 
+		else if (idCodeErreur == 2)
+			autre indication id 
+			
+		if (mdpEmpty == 1)
+			indication mdp
+		else if (mdpEmpty == 2)
+			autre indication mdp
+			
+		fin formulaire
+	}
+	else
+		enregistrement
+}
