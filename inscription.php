@@ -4,7 +4,7 @@
 <HTML>
 	<HEAD>
 		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-		<title>Inscription - Site projet annuel</title>
+		<title>Inscription - Tiklr</title>
 	</HEAD>
 	<BODY>
 
